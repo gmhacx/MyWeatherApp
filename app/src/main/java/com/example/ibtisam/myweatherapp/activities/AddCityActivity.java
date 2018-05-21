@@ -47,8 +47,12 @@ public class AddCityActivity extends AppCompatActivity {
                 if (isValid(cityName)) {
                     City newCity = new City();
                     newCity.setCity(cityName);
-                    newCity.setSyncStatus(SyncStatus.SYNC_STATUS_CITY_ADD_NOT_SYNCED);
+//                    newCity.setCountry("");
+//                    newCity.setTemperature("");
+//                    newCity.setPressure("");
+//                    newCity.setHumidity("");
                     newCity.setDate(Calendar.getInstance().getTime());
+                    newCity.setSyncStatus(SyncStatus.SYNC_STATUS_CITY_ADD_NOT_SYNCED);
                     newCity.save();
                     finish();
                     TinyBus.from(getApplicationContext()).post(new CityEventModel());

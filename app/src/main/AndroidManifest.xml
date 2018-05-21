@@ -24,7 +24,9 @@
             android:name="QUERY_LOG"
             android:value="true" />
 
-        <activity android:name=".activities.MainActivity">
+        <activity
+            android:name=".activities.MainActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,8 +48,7 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name=".sync.InitService">
+        <service android:name=".sync.InitService">
             <!--android:process=":testing">-->
         </service>
 

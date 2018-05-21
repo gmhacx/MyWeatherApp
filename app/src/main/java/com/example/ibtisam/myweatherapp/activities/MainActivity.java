@@ -3,11 +3,14 @@ package com.example.ibtisam.myweatherapp.activities;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.example.ibtisam.myweatherapp.adapters.CityRecyclerAdapter;
@@ -25,8 +29,6 @@ import com.example.ibtisam.myweatherapp.R;
 import com.example.ibtisam.myweatherapp.sync.InitService;
 import com.example.ibtisam.myweatherapp.utils.NetworkAccess;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +38,6 @@ import de.halfbit.tinybus.TinyBus;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = "MainActivity";
-    protected static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 1;
 
     ProgressDialog progressDialog;
     private CityRecyclerAdapter adapter;
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onCityEventModel (CityEventModel event) {
+    public void onCityEventModel(CityEventModel event) {
         Log.d(TAG, "onCityEventModel: ");
         allCities = City.getCitiesInOrder();
         adapter.updateList(allCities);
@@ -153,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
         if (id == R.id.action_about) {
-//            aboutDialog();
+            aboutDialog();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -191,10 +192,6 @@ public class MainActivity extends AppCompatActivity {
         pressUnits.put("mm Hg", R.string.pressure_unit_mmhg);
     }
 
-    private String localize(SharedPreferences sp, String preferenceKey, String defaultValueKey) {
-        return localize(sp, this, preferenceKey, defaultValueKey);
-    }
-
     public static String localize(SharedPreferences sp, Context context, String preferenceKey, String defaultValueKey) {
         String preferenceValue = sp.getString(preferenceKey, defaultValueKey);
         String result = preferenceValue;
@@ -208,5 +205,35 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return result;
+    }
+
+    private void aboutDialog() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Forecastie");
+        final WebView webView = new WebView(this);
+        String about = "<p>1.0</p>" +
+                "<p>An opensource weather app.</p>" +
+                "<p>Developed by <a href='mailto:ibtisam.asif@gmail.com'>Ibtisam Asif</a></p>" +
+                "<p>Data provided by <a href='https://openweathermap.org/'>OpenWeatherMap</a>, under the <a href='http://creativecommons.org/licenses/by-sa/2.0/'>Creative Commons license</a>";
+        TypedArray ta = obtainStyledAttributes(new int[]{android.R.attr.textColorPrimary, R.attr.colorAccent});
+        String textColor = String.format("#%06X", (0xFFFFFF & ta.getColor(0, Color.BLACK)));
+        String accentColor = String.format("#%06X", (0xFFFFFF & ta.getColor(1, Color.BLUE)));
+        ta.recycle();
+        about = "<style media=\"screen\" type=\"text/css\">" +
+                "body {\n" +
+                "    color:" + textColor + ";\n" +
+                "}\n" +
+                "a:link {color:" + accentColor + "}\n" +
+                "</style>" +
+                about;
+        webView.setBackgroundColor(Color.TRANSPARENT);
+        webView.loadData(about, "text/html", "UTF-8");
+        alert.setView(webView, 32, 0, 32, 0);
+        alert.setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+        alert.show();
     }
 }

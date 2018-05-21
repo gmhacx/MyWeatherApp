@@ -48,28 +48,6 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/settings_title_display">
-
-        <ListPreference
-            android:defaultValue="fresh"
-            android:entries="@array/themes"
-            android:entryValues="@array/themesValues"
-            android:key="theme"
-            android:title="@string/setting_theme" />
-
-        <ListPreference
-            android:defaultValue="arrow"
-            android:entries="@array/windDirectionFormats"
-            android:entryValues="@array/windDirectionFormatValues"
-            android:key="windDirectionFormat"
-            android:title="@string/setting_wind_direction_format" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="differentiateDaysByTint"
-            android:title="@string/setting_differentiateDaysByTint" />
-
-    </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_title_data">
 
         <ListPreference
@@ -81,12 +59,4 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/settings_title_location">
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="updateLocationAutomatically"
-            android:title="@string/setting_update_location_automatically" />
-
-    </PreferenceCategory>
 </PreferenceScreen>
